@@ -1,4 +1,4 @@
-Cyrus Quota Check
+Cyrus Daemon Quota Check
 -----------------
 
 **Version**:   0.1
@@ -9,11 +9,12 @@ Cyrus Quota Check
 
 
 This is a translation in python of Postfix quota integration perl script written by Omni Flux (http://www.omniflux.com/devel/)
+It is daemonized
 It tries to return to overquota status of a cyrus box as fast as possible. That's why i integrated a cache system in the code.
 
 **Usage** : 
 
-cyrquota-policy.py
+quota-daemon.py start|stop|restart
 
 **Limitation** :
 
@@ -33,17 +34,12 @@ To install it under ubuntu :
 
     apt-get install python-flask
 
-To run this from /etc/postfix/master.cf:
-
-    cyrquota-policy	unix	-	n	n	-	-	spawn
-       user=nobody argv=/usr/bin/python /usr/local/sbin/cyrquota-policy.py
-
  To use this from Postfix SMTPD, use in /etc/postfix/main.cf:
 
     smtpd_recipient_restrictions =
     ...
     reject_unlisted_recipient,
-    check_policy_service unix:private/cyrquota-policy,
+    check_policy_service inet:127.0.0.1:1143
     permit_sasl_authenticated,
     reject_unauth_destination
     ...
@@ -55,7 +51,7 @@ but before any permit rules or maps which return OK.
 
 To test this script by hand, execute:
 
-   % python cyrquota-policy.py
+   % telnet localhost 1143
 
 Each query is a bunch of attributes. Order does not matter.
 
