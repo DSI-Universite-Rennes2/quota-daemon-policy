@@ -151,7 +151,7 @@ class App():
                   quotaResult = "action="+overquota_response
                 else :
                   quotaResult = "action="+default_response
-                quotaCache.set(value, quotaResult, timeout=5 * 60)
+                quotaCache.set(alias(recipient), quotaResult, timeout=5 * 60)
           else :
              syslog.syslog ("Skipping external domain: " + domain(recipient).lower())
 
